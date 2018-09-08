@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 03, 2018 at 01:24 PM
+-- Generation Time: Sep 09, 2018 at 06:18 AM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 5.6.37
 
@@ -61,16 +61,27 @@ CREATE TABLE `table_category` (
 --
 
 INSERT INTO `table_category` (`category_id`, `category_name`, `category_image`, `category_order`, `top_category_id`) VALUES
-(34, 'Bangla', 'Class-7-Bangla.jpg', 1, 24),
-(35, 'English', 'Class-7-English.jpg', 2, 24),
-(36, 'Mathematics', 'Class-7-math.jpg', 3, 24),
-(37, 'ICT', 'Class-7-ICT.jpg', 4, 24),
-(38, 'Science', 'Class-7-Science.jpg', 5, 24),
-(39, 'Bangla', 'Class-8-Bangla.jpg', 1, 25),
-(40, 'English', 'Class-8-English.jpg', 2, 25),
-(41, 'Mathematics', 'Class-8-math.jpg', 3, 25),
-(42, 'ICT', 'Class-8-ICT.png', 4, 25),
-(43, 'Science', 'Class-8-Science.jpg', 5, 25);
+(34, 'Bangla-7', 'Class-7-Bangla.jpg', 1, 24),
+(35, 'English-7', 'Class-7-English.jpg', 2, 24),
+(36, 'Mathematics-7', 'Class-7-math.jpg', 3, 24),
+(37, 'ICT-7', 'Class-7-ICT.jpg', 4, 24),
+(38, 'Science-7', 'Class-7-Science.jpg', 5, 24),
+(39, 'Bangla-8', 'Class-8-Bangla.jpg', 1, 25),
+(40, 'English-8', 'Class-8-English.jpg', 2, 25),
+(41, 'Mathematics-8', 'Class-8-math.jpg', 3, 25),
+(42, 'ICT-8', 'Class-8-ICT.png', 4, 25),
+(45, 'Science-8', 'Class-8-science.JPG', 5, 25),
+(46, 'Bangla-6', 'Class-6-bangla.jpg', 1, 23),
+(47, 'English-6', 'Class-6-english.jpg', 2, 23),
+(48, 'Mathematics-6', 'Class-6-mathematics.jpg', 3, 23),
+(49, 'Science-6', 'Class-6-science.jpg', 4, 23),
+(50, 'Agriculture-6', 'Class-6-agriculture.jpg', 5, 23),
+(51, 'Bangla-9-10', 'Class-9-bangla.jpg', 1, 26),
+(52, 'English-9-10', 'Class-9-english.jpg', 2, 26),
+(53, 'Mathematics-9-10', 'Class-9-mathematics.jpg', 3, 26),
+(54, 'Physics-9-10', 'Class-9-physics.JPG', 4, 26),
+(55, 'Chemistry-09-10', 'Class-9-chemistry.PNG', 5, 26),
+(56, 'Biology-9-10', 'Class-9-biology.jpg', 6, 26);
 
 -- --------------------------------------------------------
 
@@ -84,6 +95,18 @@ CREATE TABLE `table_sub_category` (
   `sub_category_order` int(11) NOT NULL,
   `category_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `table_sub_category`
+--
+
+INSERT INTO `table_sub_category` (`sub_category_id`, `sub_category_name`, `sub_category_order`, `category_id`) VALUES
+(2, 'Lecture 1: Uploaded 2018', 1, 34),
+(3, 'Lecture 2: Uploaded 2019', 2, 34),
+(4, 'Lecture 3: Uploaded 2020', 3, 34),
+(5, 'Lecture 1: Uploaded 2018', 1, 39),
+(6, 'Lecture 2: Uploaded 2019', 2, 39),
+(7, 'Lecture 3: Uploaded 2020', 3, 39);
 
 -- --------------------------------------------------------
 
@@ -149,19 +172,19 @@ ALTER TABLE `table_admin`
 -- AUTO_INCREMENT for table `table_category`
 --
 ALTER TABLE `table_category`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `table_sub_category`
 --
 ALTER TABLE `table_sub_category`
-  MODIFY `sub_category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `sub_category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `table_top_category`
 --
 ALTER TABLE `table_top_category`
-  MODIFY `top_category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `top_category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
