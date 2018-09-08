@@ -33,6 +33,7 @@
 		while ($row = $qe->fetch_assoc()) {
 			$category_id=$row["category_id"];
 			$category_name=$row["category_name"];
+			$category_image=$row["category_image"];
 			$category_order=$row["category_order"];
 			$top_category_id=$row["top_category_id"];
 		}
@@ -70,11 +71,26 @@
 		}
 	}
 	if (isset($_POST["btn_edit"])) {
+		$category_image=$_POST["category_image"];
+		if (!empty($_FILES["text_category_image"]["name"])) {
+			$file_name=$_FILES["text_category_image"]["name"];
+			$temp_name=$_FILES["text_category_image"]["tmp_name"];
+			$imagetype=$_FILES["text_category_image"]["type"];
+			$ext=GetImageExtension($imagetype);
+			if ($ext != false) {
+				$imagename=$file_name;
+				$target_path="../images/lectures/".$imagename;
+				if (move_uploaded_file($temp_name, $target_path)) {
+					unlink("../images/lectures/".$_POST["category_image"]);
+					$category_image=$imagename;
+				}
+			}
+		}
 		$category_id = mres($con, $_POST["category_id"]);
 		$top_category_id = mres($con, $_POST["top_category_id"]);
 		$text_category_name = mres($con, $_POST["text_category_name"]);
 		$text_category_order = mres($con, $_POST["text_category_order"]);
-		$qry = mysqli_query($con, "update table_category set category_name = '".$text_category_name."', category_order = '".$text_category_order."', top_category_id = '".$top_category_id."' where category_id = '".$category_id."'") or die(mysqli_error($con));
+		$qry = mysqli_query($con, "update table_category set category_name = '".$text_category_name."', category_image = '".$category_image."', category_order = '".$text_category_order."', top_category_id = '".$top_category_id."' where category_id = '".$category_id."'") or die(mysqli_error($con));
 		if ($qry) {
 			header("Location:manage_category.php");
 			$msg = '<div id="login-alert" class="alert alert-success col-sm-12">Success!! Data is edited.</div>';
@@ -101,6 +117,7 @@
 					<?php echo $msg; echo $msg_image; ?>
 					<form id="form_add_category" class="form-horizontal" rol="form" method="post" action='<?php echo $_SERVER["PHP_SELF"]; ?>' enctype="multipart/form-data">
 						<input type="hidden" name="category_id" value="<?php echo $category_id; ?>">
+						<input type="hidden" name="category_image" value="<?php echo $category_image; ?>">
 						<div style="margin-bottom: 25px;" class="input-group">
 							<span class="input-group-addon">Category Name</span>
 							<input id="text_category_name" type="text" class="form-control" name="text_category_name" value="<?php echo $category_name; ?>">
@@ -164,11 +181,11 @@
 					$('#text_category_order').css("background", "#F2DEDE");
 					e.preventDefault();
 				}
-				if ($('#text_category_image').val() == '') {
-					$('#text_category_image').css("border-color", "#DA190B");
-					$('#text_category_image').css("background", "#F2DEDE");
-					e.preventDefault();
-				}
+				// if ($('#text_category_image').val() == '') {
+				// 	$('#text_category_image').css("border-color", "#DA190B");
+				// 	$('#text_category_image').css("background", "#F2DEDE");
+				// 	e.preventDefault();
+				// }
 				if ($('#top_category_id').val() == '') {
 					$('#top_category_id').css("border-color", "#DA190B");
 					$('#top_category_id').css("background", "#F2DEDE");

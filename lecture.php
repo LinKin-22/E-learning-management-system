@@ -18,9 +18,10 @@
 				<li class="active">
 					<a href="#" style="text-align:center;">
 						<?php 
-							$qc = mysqli_query($con, "select category_name from table_category where category_id='".$id."'");
+							$qc = mysqli_query($con, "select category_name, category_image from table_category where category_id='".$id."'");
 							$rc = mysqli_fetch_array($qc, MYSQLI_NUM);
-							echo $rc[0];
+							echo "<h4>".$rc[0]."</h4>";
+							echo "<img src='images/lectures/".$rc[1]."' class='img-responsive' style='display: block; margin-left: auto; margin-right: auto; height: 200px; width: 150px;' />";
 						 ?>
 					</a>
 				</li>

@@ -5,9 +5,10 @@
 	}
 	include "../connection.php";
 	$msg = "";
-	if (isset($_GET["delete_id"])) {
+	if (isset($_GET["delete_id"]) && isset($_GET["delete_image"])) {
 		$qry = mysqli_query($con, "delete from table_category where category_id='".mres($con, $_GET["delete_id"])."'") or die(mysqli_error($con));
 		if ($qry) {
+			unlink("../images/lectures/".$_GET["delete_image"]);
 			$msg = '<div id="login-alert" class="alert alert-success col-sm-12">Success!! Data is deleted.</div>';
 		}
 		else {
@@ -61,7 +62,7 @@
 					      	}
 					      	while ($row = $qry->fetch_assoc()) {
 					      		echo '<tr>';
-					      		echo '<td>'.$row["category_id"]."</td><td>".$row["category_name"]."</td><td><img src='../images/lectures/".$row["category_image"]."' style='display: block; margin-left: auto; margin-right: auto; height: 100px;'/>"."</td><td>".$row["category_order"]."</td><td>".$row["top_category_name"]."</td><td><a href='add_category.php?edit_id=".$row["category_id"]."'>Edit</a> | <a href='?delete_id=".$row["category_id"]."&image='"$row["category_image"]"'' onclick=\"return confirm('Are you sure to delete this item?');\"> Delete</td>";
+					      		echo '<td>'.$row["category_id"]."</td><td>".$row["category_name"]."</td><td><img src='../images/lectures/".$row["category_image"]."' style='display: block; margin-left: auto; margin-right: auto; height: 100px;'/>"."</td><td>".$row["category_order"]."</td><td>".$row["top_category_name"]."</td><td><a href='add_category.php?edit_id=".$row["category_id"]."'>Edit</a> | <a href='?delete_id=".$row["category_id"]."&delete_image=".$row["category_image"]."' onclick=\"return confirm('Are you sure to delete this item?');\"> Delete</td>";
 					      		echo '</tr>';
 					      	}
 
