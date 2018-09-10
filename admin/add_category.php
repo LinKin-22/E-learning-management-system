@@ -64,7 +64,6 @@
 			else {
 				$msg_image = '<div id="login-alert" class="alert alert-danger col-sm-12">Fail!! Image is not inserted.</div>';
 			}
-			
 		}
 		else {
 			$msg = '<div id="login-alert" class="alert alert-danger col-sm-12">Fail!! Data cannot be inserted.</div>';
@@ -181,18 +180,13 @@
 					$('#text_category_order').css("background", "#F2DEDE");
 					e.preventDefault();
 				}
-				// if ($('#text_category_image').val() == '') {
-				// 	$('#text_category_image').css("border-color", "#DA190B");
-				// 	$('#text_category_image').css("background", "#F2DEDE");
-				// 	e.preventDefault();
-				// }
 				if ($('#top_category_id').val() == '') {
 					$('#top_category_id').css("border-color", "#DA190B");
 					$('#top_category_id').css("background", "#F2DEDE");
 					e.preventDefault();
 				}
 				else {
-					$('form_add_top_category').unbind('submit').submit();
+					$('form_add_category').unbind('submit').submit();
 				}
 			});
 		});

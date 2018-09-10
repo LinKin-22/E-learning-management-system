@@ -5,9 +5,11 @@
 	}
 	include "../connection.php";
 	$msg = "";
+	$msg_file="";
 	$sub_category_id="";
 	$sub_category_name="";
 	$sub_category_order="";
+	$sub_category_file="";
 	$category_id="";
 	if (isset($_GET["edit_id"])) {
 		$qe = mysqli_query($con, "select * from table_sub_category where sub_category_id='".mres($con, $_GET["edit_id"])."'");
@@ -15,6 +17,7 @@
 			$sub_category_id=$row["sub_category_id"];
 			$sub_category_name=$row["sub_category_name"];
 			$sub_category_order=$row["sub_category_order"];
+			$sub_category_filelocation=$row["sub_category_filelocation"];
 			$category_id=$row["category_id"];
 		}
 	}
@@ -22,9 +25,39 @@
 		$category_id=mres($con, $_POST["category_id"]);
 		$text_sub_category_name = mres($con, $_POST["text_sub_category_name"]);
 		$text_sub_category_order = mres($con, $_POST["text_sub_category_order"]);
-		$qry = mysqli_query($con, "insert into table_sub_category values('', '".$text_sub_category_name."', '".$text_sub_category_order."', '".$category_id."')") or die(mysqli_error($con));
+		$qry = mysqli_query($con, "insert into table_sub_category values('', '".$text_sub_category_name."', '".$text_sub_category_order."', '','".$category_id."')") or die(mysqli_error($con));
+		$sub_category_id = mysqli_insert_id($con);
 		if ($qry) {
 			$msg = '<div id="login-alert" class="alert alert-success col-sm-12">Success!! Data is inserted.</div>';
+			$file_name=$_FILES["text_sub_category_file"]["name"];
+			$temp_name=$_FILES["text_sub_category_file"]["tmp_name"];
+			$array = explode(".", $file_name);  
+	        $name = $array[0];
+	        $ext = $array[1];
+
+			if ($ext == 'zip') {
+				$path='../files/';
+				$target_path=$path.$file_name;
+				if (move_uploaded_file($temp_name, $target_path)) {
+					$zip = new ZipArchive;  
+                     if($zip->open($target_path))  
+                     {  
+                          $zip->extractTo($path);  
+                          $zip->close();  
+                     }
+                     unlink($target_path);
+                     $fullLocation = 'files/'.$name.'/index.html';
+
+					$qry_update=mysqli_query($con, "update table_sub_category set sub_category_filelocation='".$fullLocation."' where sub_category_id='".$sub_category_id."'");
+					$msg_file = '<div id="login-alert" class="alert alert-success col-sm-12">Success!! File is inserted.</div>';
+				}
+				else {
+					$msg_file = '<div id="login-alert" class="alert alert-danger col-sm-12">Fail!! File is not inserted.</div>';
+				}
+			}
+			else {
+				$msg_file = '<div id="login-alert" class="alert alert-danger col-sm-12">Fail!! File is not inserted.</div>';
+			}
 		}
 		else {
 			$msg = '<div id="login-alert" class="alert alert-danger col-sm-12">Fail!! Data cannot be inserted.</div>';
@@ -59,9 +92,10 @@
 				</div>
 
 				<div class="panel-body">
-					<?php echo $msg; ?>
-					<form id="form_sub_category" class="form-horizontal" rol="form" method="post" action='<?php echo $_SERVER["PHP_SELF"]; ?>'>
+					<?php echo $msg; echo $msg_file; ?>
+					<form id="form_sub_category" class="form-horizontal" rol="form" method="post" action='<?php echo $_SERVER["PHP_SELF"]; ?>' enctype="multipart/form-data">
 						<input type="hidden" name="sub_category_id" value="<?php echo $sub_category_id; ?>">
+						<input type="hidden" name="sub_category_file" value="<?php echo $sub_category_file; ?>">
 						<div style="margin-bottom: 25px;" class="input-group">
 							<span class="input-group-addon">Sub Category Name</span>
 							<input id="text_sub_category_name" type="text" class="form-control" name="text_sub_category_name" value="<?php echo $sub_category_name; ?>">
@@ -86,6 +120,10 @@
 									}
 								 ?>
 							</select>
+						</div> 
+						<div style="margin-bottom: 25px;" class="input-group">
+							<span class="input-group-addon">Upload zip file</span>
+							<input id="text_sub_category_file" type="file" class="form-control" name="text_sub_category_file" value="<?php echo $category_file; ?>">
 						</div> 
 						<div style="margin-top: 10px;" class="form-group">
 							<div class="col-sm-12 controls">
